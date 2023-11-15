@@ -1,0 +1,10 @@
+---
+- name: Copy the join command to worker node
+  copy:
+    src: /join-command
+    dest: /join-command
+    remote_src: yes
+
+- name: Join node to Kubernetes cluster
+  command: sh /join-command
+  ignore_errors: yes
