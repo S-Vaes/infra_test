@@ -42,9 +42,9 @@
             env = {
               TF_VAR_SSH_PATH="${PROJECT_ROOT}/secrets/.ssh/kubekeys.pub";
               ANSIBLE_PRIVATE_KEY_FILE="${PROJECT_ROOT}/secrets/.ssh/kubekeys";
-              ANSIBLE_HOST_KEY_CHECKING = "False";
+              ANSIBLE_HOST_KEY_CHECKING = false;
               TF_VAR_hcloud_token = (builtins.readFile ./secrets/hcloud.token);
-              KUBECONFIG = "./config/kubeconfig";
+              KUBECONFIG = "./config/kube.config";
             };
           };
       });

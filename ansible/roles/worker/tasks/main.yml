@@ -1,0 +1,16 @@
+---
+# tasks file for roles/worker
+- name: Install containerd
+  apt:
+    name: containerd
+    state: present
+
+- name: Enable and start containerd
+  systemd:
+    name: containerd
+    enabled: yes
+    state: started
+
+- name: Join node to Kubernetes cluster
+  command: "{{ hostvars[groups['masters'][0]]['join_command'] }}"
+  when: join_command is defined

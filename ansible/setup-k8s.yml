@@ -1,15 +1,58 @@
 ---
-- hosts: all
-  become: true
-  roles:
-    - kubernetes_common
+# - name: Initial setup tasks
+#   hosts: all
+#   become: yes
+#   tasks:
+#     - name: Create a new user
+#       user:
+#         name: myuser
+#         group: sudo
+#         create_home: yes
+#         shell: /bin/bash
 
-- hosts: master
-  become: true
+#     - name: Set authorized key for the new user from ANSIBLE_PRIVATE_KEY_FILE
+#       authorized_key:
+#         user: myuser
+#         state: present
+#         key: "{{ lookup('file', lookup('env','ANSIBLE_PRIVATE_KEY_FILE') + '.pub') }}"
+
+
+# - hosts: all
+#   become: yes
+#   vars:
+#     ansible_user: myuser
+#     ansible_ssh_private_key_file: "{{ lookup('env', 'ANSIBLE_PRIVATE_KEY_FILE') }}"
+#   roles:
+#     - common
+
+# - hosts: masters
+#   become: yes
+#   vars:
+#     ansible_user: myuser
+#     ansible_ssh_private_key_file: "{{ lookup('env', 'ANSIBLE_PRIVATE_KEY_FILE') }}"
+#   environment:
+#     KUBECONFIG: /home/{{ ansible_user }}/.kube
+#   roles:
+#     - master
+
+# - hosts: workers
+#   become: yes
+#   vars:
+#     ansible_user: myuser
+#     ansible_ssh_private_key_file: "{{ lookup('env', 'ANSIBLE_PRIVATE_KEY_FILE') }}"
+#   roles:
+#     - worker
+
+- hosts: all
   roles:
-    - kubernetes_master
+    - common
+
+- hosts: masters
+  environment:
+     KUBECONFIG: /{{ ansible_user }}/.kube/config
+  roles:
+    - master
 
 - hosts: workers
-  become: true
   roles:
-    - kubernetes_worker
+    - worker
