@@ -19,6 +19,7 @@
       # ... get the package set for this particular platform ...
       let
         pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+        PROJECT_ROOT = builtins.toString ./.;
       in {
 
         # ... and define a development shell for it ...
@@ -31,21 +32,18 @@
             # ... which makes available the following dependencies, 
             # all sourced from the `pkgs` package set:
             packages = with pkgs; [
+              git-crypt
               kubectl
               hcloud
               terraform
               ansible
             ];
 
-            # nativeBuildInputs = with pkgs; [
-            #   # llvmPackages_16.bintools
-            #   # llvmPackages_16.libcxx
-            #   # llvmPackages_16.libclang
-            #   # lld_16
-            # ];
-
             env = {
-              TF_VAR_hcloud_token = (builtins.readFile ./hcloud.token);
+              TF_VAR_SSH_PATH="${PROJECT_ROOT}/secrets/.ssh/kubekeys.pub";
+              ANSIBLE_PRIVATE_KEY_FILE="${PROJECT_ROOT}/secrets/.ssh/kubekeys";
+              ANSIBLE_HOST_KEY_CHECKING = "False";
+              TF_VAR_hcloud_token = (builtins.readFile ./secrets/hcloud.token);
               KUBECONFIG = "./config/kubeconfig";
             };
           };

@@ -2,7 +2,7 @@ variable "hcloud_token" {
     description = "API Token for Hetzner Cloud"
     type        = string
     sensitive   = true
-    default = ""
+    default     = ""
 }
 
 variable "master_server_type" {
