@@ -17,6 +17,9 @@ resource "hcloud_server" "k8s_master" {
         network_id = hcloud_network.k8s_network.id
         ip         = "10.0.1.9"
     }
+
+    labels = {"nixos-flavour": "nixos-infect"}
+    user_data = file("cloudinit.yaml")
 }
 
 resource "hcloud_server" "k8s_worker" {
@@ -31,4 +34,7 @@ resource "hcloud_server" "k8s_worker" {
         network_id = hcloud_network.k8s_network.id
         ip         = "10.0.1.1${count.index}"
     }
+
+    labels = {"nixos-flavour": "nixos-infect"}
+    user_data = file("cloudinit.yaml")
 }

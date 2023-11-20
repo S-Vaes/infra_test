@@ -7,3 +7,8 @@ resource "hcloud_ssh_key" "k8s_key" {
   name       = "hcloud_ssh_key"
   public_key = file(var.SSH_PATH)
 }
+
+variable "PRIVATE_SSH_PATH" {
+  description = "Path to the SSH private key"
+  type        = string
+}

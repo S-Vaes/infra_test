@@ -36,11 +36,13 @@
               kubectl
               hcloud
               terraform
+              terraform-ls
               ansible
             ];
 
             env = {
               TF_VAR_SSH_PATH="${PROJECT_ROOT}/secrets/.ssh/kubekeys.pub";
+              TF_VAR_PRIVATE_SSH_PATH="${PROJECT_ROOT}/secrets/.ssh/kubekeys";
               ANSIBLE_PRIVATE_KEY_FILE="${PROJECT_ROOT}/secrets/.ssh/kubekeys";
               ANSIBLE_HOST_KEY_CHECKING = false;
               TF_VAR_hcloud_token = (builtins.readFile ./secrets/hcloud.token);
